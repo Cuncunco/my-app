@@ -11,7 +11,7 @@ const CustomerStory = [
         author: {
             name: 'Annete Bones',
             role: 'CEO na Anne Corp',
-            avatar: '/annete.png'
+            avatar: '/customer1.png'
         }
     },
     {

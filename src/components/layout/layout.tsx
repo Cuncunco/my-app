@@ -1,4 +1,6 @@
 import { Inter, PT_Sans_Caption } from "next/font/google"
+
+import { CallToAction } from '@/templates/landing-page/sections';
 import { Footer } from "./footer"
 import { Header } from "./header"
 
@@ -9,7 +11,7 @@ type LayoutProps = {
 
 const inter = Inter({ 
     subsets: ['latin'],
-    weight:['400','500'],
+    weight:['400','500','700'],
     variable:'--font-inter' 
 });
 
