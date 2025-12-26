@@ -1,4 +1,4 @@
-import { Linkedin, Facebook, Slack, Twitter } from "lucide-react"
+import { Linkedin, Facebook, Slack, Twitter, Copy } from "lucide-react"
 
 export type ShareConfig = {
     url: string;
@@ -6,7 +6,7 @@ export type ShareConfig = {
     text?: string;
 };
 
-export type SocialProvider = 'linkedin' | 'facebook' | 'slack' | 'twitter';
+export type SocialProvider = 'linkedin' | 'facebook' | 'slack' | 'twitter' 
 
 export const SOCIAL_PROVIDERS = {
     linkedin: {
@@ -34,5 +34,6 @@ export const SOCIAL_PROVIDERS = {
         icon: <Twitter className="h-4 w-4" />,
         shareUrl: (config: ShareConfig) => `https://x.com/intent/tweet?url=${encodeURIComponent
            (config.url)}&text=${encodeURIComponent(config.title || '')}`,     
-    },
+    },   
+      
 }

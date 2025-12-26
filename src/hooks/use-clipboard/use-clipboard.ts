@@ -1,38 +1,38 @@
+'use client'
 import { useState, useCallback, useEffect } from "react";
 
-type UseClipboardProps = {
-    timeout?: number; 
-}
+export const useClipboard = ({ timeout = 2000 }) => {
+  const [isCopied, setIsCopied] = useState(false)
 
-export const useClipboard = ({ timeout = 2000 }: UseClipboardProps) => {
-    const [isCopied, setIsCopied] = useState(false);
+  const handleCopy = useCallback((text: string) => {
+    try {
+      const textarea = document.createElement("textarea")
+      textarea.value = text
+      textarea.style.position = "fixed"
+      textarea.style.opacity = "0"
 
-    const handleCopy = useCallback(async (text: string) => {
-        if(!navigator?.clipboard) {
-            console.error('Clipboard não suportado.');
-            return false
-        }
-        try {
-             await navigator.clipboard.writeText(text);
-    
-       } catch (error) {
-        console.error('Falha ao copiar o texto:', error);
-        setIsCopied(false);
-        return false;
-       }
-    }, []);
+      document.body.appendChild(textarea)
+      textarea.focus()
+      textarea.select()
 
-    useEffect(() => {
-        if(isCopied) {
-            const timer = setTimeout(() => {
-                setIsCopied(false);
-            })
-       return () => clearTimeout(timer);
-         }
-    }, [isCopied, timeout])
-    
-    return {
-        isCopied,
-        handleCopy
+      const success = document.execCommand("copy")
+      document.body.removeChild(textarea)
+
+      setIsCopied(success)
+
+      return success
+    } catch (error) {
+      console.error("Erro ao copiar:", error)
+      setIsCopied(false)
+      return false
     }
+  }, [])
+
+  useEffect(() => {
+    if (!isCopied) return
+    const timer = setTimeout(() => setIsCopied(false), timeout)
+    return () => clearTimeout(timer)
+  }, [isCopied, timeout])
+
+  return { isCopied, handleCopy }
 }

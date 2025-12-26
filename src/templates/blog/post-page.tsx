@@ -6,48 +6,27 @@ import {
   BreadcrumbSeparator
 } from "@/components/ui/breadcrumb"
 
-import { useRouter } from "next/router"
-import { allPosts } from "contentlayer/generated"
+import { Post } from "contentlayer/generated"
 import Link from "next/link"
 import Image from "next/image"
 
 import { Avatar } from "@/components/avatar"
 import { Markdown } from "@/components/markdown"
-import { Button } from "@/components/ui/button"
-import { useShare } from "@/hooks"
+import { PostShare } from "./components/post-share"
 
-export default function PostPage() {
-  const router = useRouter()
+export type PostPageProps = {
+  post: Post;
+};
 
-  // 1️⃣ aguarda o router
-  if (!router.isReady) return null
+export const PostPage = ({ post }: PostPageProps) => {
+  const publishedDate = new Date(post.date).toLocaleDateString("pt-BR");
+  const postUrl = `https://site.set/blog/${post.slug}`;
 
-  // 2️⃣ valida slug
-  const slug = router.query.slug
-  if (typeof slug !== "string") {
-    return <p>Slug inválida</p>
-  }
+ 
 
-  // 3️⃣ busca o post
-  const post = allPosts.find(p => p.slug === slug)
-  if (!post) {
-    return <p>Post não encontrado</p>
-  }
-
-  // 4️⃣ dados derivados (post já existe)
-  const publishedDate = new Date(post.date).toLocaleDateString("pt-BR")
-  const postUrl = `https://site.set/blog/${slug}`
-
-  const { shareButtons } = useShare({
-    url: postUrl,
-    title: post.title,
-    text: post.description
-  })
-
-  // 5️⃣ render FINAL (100% seguro)
   return (
-    <main className="mt-32 container">
-      <div className="container space-y-12 px-4 md:px-8">
+    <main className="py-20 container">
+      <div className="space-y-8 px-4 md:px-8">
 
         <Breadcrumb>
           <BreadcrumbList>
@@ -69,7 +48,6 @@ export default function PostPage() {
 
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_300px] gap-12">
           <article className="bg-gray-900 rounded-lg overflow-hidden">
-
             <figure className="relative aspect-16/10">
               <Image
                 src={post.image}
@@ -105,27 +83,13 @@ export default function PostPage() {
             </div>
           </article>
 
-          <aside>
-            <div className="rounded-lg bg-gray-900 p-6">
-              <h2 className="font-bold mb-4">Compartilhar</h2>
-
-              <div className="space-y-3">
-                {shareButtons?.map(button => (
-                  <Button
-                    key={button.provider}
-                    onClick={() => button.action()}
-                    variant="outline"
-                    className="w-full justify-start gap-2"
-                  >
-                    {button.icon}
-                    {button.name}
-                  </Button>
-                ))}
-              </div>
-            </div>
-          </aside>
+        <PostShare 
+        url={postUrl}
+        title={post.title}
+        description={post.description}
+        />
         </div>
       </div>
     </main>
-  )
-}
+  );
+};
