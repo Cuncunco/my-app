@@ -3,9 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "contentlayer dev & next dev",
     "build": "contentlayer build || true && next build --webpack",
     "start": "next start",
+    "postinstall": "contentlayer build",
     "lint": "eslint"
   },
   "dependencies": {
