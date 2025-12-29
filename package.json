@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "contentlayer dev & next dev",
-    "build": "contentlayer build || true && next build --webpack",
+    "build": "next build",
     "start": "next start",
     "postinstall": "contentlayer build",
     "lint": "eslint"
